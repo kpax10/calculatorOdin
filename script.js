@@ -45,16 +45,26 @@ const operatorButtons = document.querySelectorAll('.btn-operator');
 
 operatorButtons.forEach(element => {
   element.addEventListener('click', function (e) {
+    if (operator) equal();
+    operator = e.target.textContent;
+    if (displayValue === '') return;
     userInput = displayValue;
     displayValue = '';
-    operator = e.target.textContent;
     console.log(operator);
   })
 });
 
 const equalsButton = document.querySelector('.btn-equals');
 
-equalsButton.addEventListener('click', function () {
-  displayValue = operate(operator, userInput, displayValue);
-  display.textContent = displayValue;
-});
+function equal() {
+  if (userInput === '' || operator === '') return;
+  displayValue = Number(operate(operator, userInput, displayValue).toFixed(9));
+  if (displayValue !== Infinity) {
+    display.textContent = displayValue;
+    operator = '';
+  } else {
+    alert('Cant do that.  Please clear screen to continue!')
+  }
+}
+
+equalsButton.addEventListener('click', equal);
