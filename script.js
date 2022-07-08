@@ -29,6 +29,16 @@ numberButtons.forEach(element => {
   })
 });
 
+// Clear display
+const clearButton = document.querySelector('.btn-clear');
+
+clearButton.addEventListener('click', function () {
+  displayValue = '';
+  userInput = '';
+  operator = '';
+  display.textContent = 0;
+})
+
 // loop over operator buttons, storing the operator clicked
 // once operator is clicked, displayValue = userInput
 const operatorButtons = document.querySelectorAll('.btn-operator');
