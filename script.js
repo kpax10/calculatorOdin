@@ -1,18 +1,16 @@
 'use strict;'
 
 const add = (a, b) => Number(a) + Number(b);
-const subtract = (a, b) => a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => a / b;
+const subtract = (a, b) => Number(a) - Number(b);
+const multiply = (a, b) => Number(a) * Number(b);
+const divide = (a, b) => Number(a) / Number(b);
 
 const operate = function (operator, a, b) {
   if (operator === '+') return add(a, b)
   if (operator === '-') return subtract(a, b)
-  if (operator === '*') return multiply(a, b)
-  if (operator === '/') return divide(a, b)
+  if (operator === '×') return multiply(a, b)
+  if (operator === '÷') return divide(a, b)
 }
-
-// console.log(operate('/', 1, 3));
 
 const numberButtons = document.querySelectorAll('#btn-num');
 const display = document.querySelector('#display-numbers');
@@ -47,5 +45,6 @@ operatorButtons.forEach(element => {
 const equalsButton = document.querySelector('.btn-equals');
 
 equalsButton.addEventListener('click', function () {
-  console.log(operate(operator, userInput, displayValue))
+  displayValue = operate(operator, userInput, displayValue);
+  display.textContent = displayValue;
 });
