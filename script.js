@@ -14,6 +14,7 @@ const operate = function (operator, a, b) {
 
 const numberButtons = document.querySelectorAll('#btn-num');
 const display = document.querySelector('#display-numbers');
+const decimal = document.querySelector('.decimal');
 
 let displayValue = '';
 let userInput = '';
@@ -22,6 +23,11 @@ let operator = '';
 // loop over numberButtons and add event listener to buttons creating the displayValue
 numberButtons.forEach(element => {
   element.addEventListener('click', function (e) {
+    if (displayValue.includes('.')) {
+      decimal.disabled = true;
+
+      // decimal.style.color = 'red';
+    }
     if (!(displayValue.length > 10)) {
       displayValue += e.target.textContent;
       display.textContent = displayValue;
@@ -37,6 +43,7 @@ clearButton.addEventListener('click', function () {
   userInput = '';
   operator = '';
   display.textContent = 0;
+  decimal.disabled = false;
 })
 
 // loop over operator buttons, storing the operator clicked
@@ -45,6 +52,7 @@ const operatorButtons = document.querySelectorAll('.btn-operator');
 
 operatorButtons.forEach(element => {
   element.addEventListener('click', function (e) {
+    decimal.disabled = false;
     if (operator) equal();
     operator = e.target.textContent;
     if (displayValue === '') return;
