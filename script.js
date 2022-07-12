@@ -12,7 +12,7 @@ const operate = function (operator, a, b) {
   if (operator === '÷') return divide(a, b)
 }
 
-const numberButtons = document.querySelectorAll('#btn-num');
+const numberBtns = document.querySelectorAll('#btn-num');
 const display = document.querySelector('#display-numbers');
 const decimal = document.querySelector('.decimal');
 
@@ -20,25 +20,22 @@ let displayValue = '';
 let userInput = '';
 let operator = '';
 
-// loop over numberButtons and add event listener to buttons creating the displayValue
-numberButtons.forEach(element => {
+// loop over numberBtns and add event listener to buttons creating the displayValue
+numberBtns.forEach(element => {
   element.addEventListener('click', function (e) {
+    if (displayValue.length > 9) return;
+    displayValue += e.target.textContent;
+    display.textContent = displayValue;
     if (displayValue.includes('.')) {
       decimal.disabled = true;
-
-      // decimal.style.color = 'red';
+      decimal.style.color = 'black';
     }
-    if (!(displayValue.length > 10)) {
-      displayValue += e.target.textContent;
-      display.textContent = displayValue;
-    } else return;
   })
 });
 
-// Clear display
-const clearButton = document.querySelector('.btn-clear');
+const clearBtn = document.querySelector('.btn-clear');
 
-clearButton.addEventListener('click', function () {
+clearBtn.addEventListener('click', function () {
   displayValue = '';
   userInput = '';
   operator = '';
@@ -46,11 +43,22 @@ clearButton.addEventListener('click', function () {
   decimal.disabled = false;
 })
 
+const deleteBtn = document.querySelector('.btn-delete');
+
+deleteBtn.addEventListener('click', function () {
+  display.textContent = displayValue.slice(0, displayValue.length - 1);
+  displayValue = displayValue.slice(0, displayValue.length - 1);
+  if (displayValue.length === 0) {
+    return display.textContent = '0';
+  }
+  return displayValue;
+})
+
 // loop over operator buttons, storing the operator clicked
 // once operator is clicked, displayValue = userInput
-const operatorButtons = document.querySelectorAll('.btn-operator');
+const operatorBtns = document.querySelectorAll('.btn-operator');
 
-operatorButtons.forEach(element => {
+operatorBtns.forEach(element => {
   element.addEventListener('click', function (e) {
     decimal.disabled = false;
     if (operator) equal();
@@ -58,7 +66,6 @@ operatorButtons.forEach(element => {
     if (displayValue === '') return;
     userInput = displayValue;
     displayValue = '';
-    console.log(operator);
   })
 });
 
@@ -66,7 +73,16 @@ const equalsButton = document.querySelector('.btn-equals');
 
 function equal() {
   if (userInput === '' || operator === '') return;
-  displayValue = Number(operate(operator, userInput, displayValue).toFixed(9));
+  let displayLength;
+
+  displayValue = operate(operator, userInput, displayValue);
+  displayLength = displayValue.toString().length;
+  if (displayLength > 9) {
+    displayValue = displayValue
+      .toString()
+      .slice(0, 10);
+  }
+
   if (displayValue !== Infinity) {
     display.textContent = displayValue;
     operator = '';
